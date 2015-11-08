@@ -1,19 +1,38 @@
-import numpy as np
 import os
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 
-image_file = os.path.join('F:\GitHub\Database\Synthetics\c.ppm')
-image = plt.imread(image_file)
-imageNP=np.array(image)
-print(imageNP.shape)
+# Global parameters
+syntheticsDirPath = r'F:\GitHub\Database\Synthetics'
 
-# plt.imshow(image)
-# plt.axis('off')  # clear x- and y-axes
-# plt.show()
-print("Hello World")
+def getInputs(plot=False):
+	sourcePath        = os.path.join(syntheticsDirPath, 'c.ppm')
+	editedSourcePath  = os.path.join(syntheticsDirPath, 'd.ppm')
+	sourceArray       = np.array(plt.imread(sourcePath      ))
+	editedSourceArray = np.array(plt.imread(editedSourcePath))
+	if plot:
+		plt.imshow(sourceArray)
+		plt.axis('off')
+		plt.show()
+	return sourceArray, editedSourceArray
 
+def process(source=None, editedSource=None):
+	difference = source - editedSource
+	print(np.amin(difference))
+	print(np.amax(difference))
+	return difference
 
+def saveOutputs(diff=None):
+	if not diff==None:
+		plt.imsave(os.path.join(syntheticsDirPath, 'diff.png'), diff)
+	return 0
+
+if __name__ == '__main__':
+	source, editedSource = getInputs()
+	difference = process(source, editedSource)
+	saveOutputs(difference)
+	print('ok')
 
 ##Heart of C code.
 # void Pima::run(const char * outputName)
