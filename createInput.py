@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 
-image_file = os.path.join(os.path.dirname(__file__),'c.ppm')
+image_file = os.path.join('F:\GitHub\Database\Synthetics\c.ppm')
 image = plt.imread(image_file)
 imageNP=np.array(image)
 print(imageNP.shape)
