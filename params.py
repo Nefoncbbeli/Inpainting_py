@@ -1,4 +1,6 @@
 params = {
-	'size_dilate' : 25
-,	'size_patch'  : 
+	'sizeDilate'         : 25
+,	'sizePatch'          : 9
+,	'reductionInfluence' : 0.9
+,	'epsilon'             : 2.0	
 }
