@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
+import process
 
 # Global parameters
 syntheticsDirPath = r'F:\GitHub\Database\Synthetics'
@@ -17,12 +18,6 @@ def getInputs(plot=False):
 		plt.show()
 	return sourceArray, editedSourceArray
 
-def process(source=None, editedSource=None):
-	difference = source - editedSource
-	print(np.amin(difference))
-	print(np.amax(difference))
-	return difference
-
 def saveOutputs(diff=None):
 	if not diff==None:
 		plt.imsave(os.path.join(syntheticsDirPath, 'diff.png'), diff)
@@ -30,7 +25,7 @@ def saveOutputs(diff=None):
 
 if __name__ == '__main__':
 	source, editedSource = getInputs()
-	difference = process(source, editedSource)
+	difference = process.run(source, editedSource)
 	saveOutputs(difference)
 	print('ok')
 
