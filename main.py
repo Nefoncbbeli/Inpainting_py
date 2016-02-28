@@ -1,8 +1,19 @@
+# PYTHON IMPORT 
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
+import json
+from pprint import pprint
+
+import logging
+logging.basicConfig(format='%(levelname)s: %(message)s',level=logging.DEBUG)
+
+# PERSONAL IMPORT 
 import process
+import utils
+with open('params.json') as params_file:    
+    params = json.load(params_file)
 
 # Global parameters
 syntheticsDirPath = r'F:\GitHub\Database\Synthetics'
@@ -18,16 +29,22 @@ def getInputs(plot=False):
 		plt.show()
 	return sourceArray, editedSourceArray
 
-def saveOutputs(diff=None):
+
+def saveOutputs(outDir, diff=None):
 	if not diff==None:
 		plt.imsave(os.path.join(syntheticsDirPath, 'diff.png'), diff)
 	return 0
 
+"""Main fonction
+
+This is the main
+"""
 if __name__ == '__main__':
+	logging.info('Start main')
 	source, editedSource = getInputs()
-	difference = process.run(source, editedSource)
-	saveOutputs(difference)
-	print('ok')
+	difference = process.run(params, source, editedSource)
+	utils.saveOutput(syntheticsDirPath, difference, 'difference')
+	logging.info('End main')
 
 ##Heart of C code.
 # void Pima::run(const char * outputName)
