@@ -9,7 +9,7 @@ import copy
 # PERSONAL IMPORT
 import utils
 
-syntheticsDirPath = r'F:\GitHub\Database\Synthetics'
+syntheticsDirPath = utils.syntheticsDirPath# r'C:\Users\adrie\Documents\Git\Inpainting\Database'
 
 
 def test():

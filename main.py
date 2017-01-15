@@ -16,7 +16,7 @@ with open('params.json') as params_file:
     params = json.load(params_file)
 
 # Global parameters
-syntheticsDirPath = r'F:\GitHub\Database\Synthetics'
+syntheticsDirPath = utils.syntheticsDirPath# r'C:\Users\adrie\Documents\Git\Inpainting\Database'
 
 def getInputs(plot=False):
 	sourcePath        = os.path.join(syntheticsDirPath, 'c.ppm')
