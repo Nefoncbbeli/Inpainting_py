@@ -1,7 +1,18 @@
 import os
 import matplotlib.pyplot as plt
 
-syntheticsDirPath = r'C:\Users\adrie\Documents\Git\Inpainting\Database'
+opj = os.path.join
+opd = os.path.dirname
+opb = os.path.basename
 
-def saveOutput(outDir, img=None, imgName='image'):
-	plt.imsave(os.path.join(outDir, '%s.png'%imgName), img)
+databaseDir = opj(opd(opd(__file__)), 'Database')
+outputDir   = opj(opd(opd(__file__)),'_outputDir')
+debugDir    = opj(outputDir, 'debug')
+
+def createOutputDir(outputDir):
+	if not os.path.exists(outputDir):
+		os.makedirs(outputDir)
+
+def saveOutput(outputDir, img=None, imgName='image'):
+	createOutputDir(outputDir)
+	plt.imsave(opj(outputDir, '%s.png'%imgName), img)

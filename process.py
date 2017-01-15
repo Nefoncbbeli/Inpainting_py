@@ -9,7 +9,7 @@ import copy
 # PERSONAL IMPORT
 import utils
 
-syntheticsDirPath = utils.syntheticsDirPath# r'C:\Users\adrie\Documents\Git\Inpainting\Database'
+debugDir = utils.debugDir# r'C:\Users\adrie\Documents\Git\Inpainting\Database'
 
 
 def test():
@@ -35,15 +35,15 @@ def test():
 
 [description]
 """
-def initProcess(params, source, editedSource, difference):
+def initProcess(params, source, editedSource):
 	w, h = source.shape[0], source.shape[1]
 	tgtRegion = np.ones(w * h).reshape(w, h)
 	srcRegion = np.ones(w * h).reshape(w, h)
-	fillFront    = np.ones(w * h).reshape(w, h)
 	# Force size_patch to be odd
 	assert params['sizePatch'] % 2 == 1, "sizePatch must be odd"
 	log.debug('sizePatch:%s'% params['sizePatch'] )
 	# Fill targerRegion
+	difference = source - editedSource
 	for y in range(h):
 		for x in range(w):
 			tgtRegion[x,y] = 1 if difference[x,y,:].any() else 0
@@ -59,15 +59,16 @@ def initProcess(params, source, editedSource, difference):
 	tgtRegionDilated = ndimage.binary_dilation(tgtRegion, structure=structureDilate).astype(tgtRegion.dtype)
 	tgtRegionEroded  = ndimage.binary_erosion(tgtRegion , structure=structureErode ).astype(tgtRegion.dtype)
 	fillFront = tgtRegionDilated - tgtRegionEroded
-	utils.saveOutput(syntheticsDirPath, tgtRegion, 'tgtRegion')
-	utils.saveOutput(syntheticsDirPath, tgtRegionDilated, 'tgtRegionDilated')
-	utils.saveOutput(syntheticsDirPath, tgtRegionEroded, 'tgtRegionEroded')
-	utils.saveOutput(syntheticsDirPath, fillFront, 'fillFront')
+	utils.saveOutput(debugDir, tgtRegion, 'tgtRegion')
+	utils.saveOutput(debugDir, tgtRegionDilated, 'tgtRegionDilated')
+	utils.saveOutput(debugDir, tgtRegionEroded, 'tgtRegionEroded')
+	utils.saveOutput(debugDir, fillFront, 'fillFront')
 	return fillFront, tgtRegion, srcRegion, nbPoint
-	# source_region=tmp3.dilate(size_dilate,size_dilate)-tgt_region;
 
 def inpaint(fillFront, tgtRegion, srcRegion, nbPoint):
 	log.info('WTF?!')
+	print('WIP')
+	exit()
 	while (nbPoint != 0):
 		getMaxPatch()
 		findExemplarPatch()
@@ -124,9 +125,8 @@ def inpaint(fillFront, tgtRegion, srcRegion, nbPoint):
 """
 def run(params, source=None, editedSource=None):
 	# test()
-	difference = source - editedSource
-	fillFront, tgtRegion, srcRegion, nbPoint = initProcess(params, source, editedSource, difference)
+	fillFront, tgtRegion, srcRegion, nbPoint = initProcess(params, source, editedSource)
 	inpaint(fillFront, tgtRegion, srcRegion, nbPoint)
 	# print(np.amin(difference))
 	# print(np.amax(difference))
-	return difference
+	return 0
